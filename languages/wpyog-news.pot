@@ -1,0 +1,466 @@
+# Translation of WPYog News.
+# Copyright (C) 2024 poppinsdigital.com
+# This file is distributed under the same license as the WPYog News plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WPYog News 1.0.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wpyog-news\n"
+"POT-Creation-Date: 2026-05-20 13:03\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-05-20 13:03\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Python i18n script\n"
+"Domain: wpyog-news\n"
+
+#: includes/class-wpyog-post-types.php:119
+msgid "Add New Category"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:64
+msgid "Add New News"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:63
+msgid "Add News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:267
+msgid "Add News Items"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:269
+msgid "Add Your First News Item"
+msgstr ""
+
+#: includes/blocks/class-wpyog-block.php:129 includes/class-wpyog-post-types.php:114
+msgid "All Categories"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:62
+msgid "All News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:212
+msgid "All attributes"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:216
+msgid "Attribute"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:135
+msgid "Auto-Fetch from URL"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:116
+msgid "Card"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:121
+msgid "Categories"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:112
+msgctxt "Taxonomy singular name"
+msgid "Category"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:136
+msgid "Category (optional)"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:121
+msgid "Columns (card only)"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:110
+msgid "Configure your news display and copy the shortcode."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:198
+msgid "Copy"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:277
+msgid "Create categories under WPYog News → Categories to group your news by topic."
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:154
+msgid "Custom field deleted."
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:153
+msgid "Custom field updated."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:218
+msgid "Default"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:285
+msgid "Display News on Your Site"
+msgstr ""
+
+#: includes/blocks/class-wpyog-block.php:35
+msgid "Display news in a list or card layout."
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:117
+msgid "Edit Category"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:65
+msgid "Edit News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:163
+msgid "Excerpt Length (words)"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:29
+msgid "External Link"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:295
+msgid "External Links & Sources"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:61
+msgid "External URL"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:123
+msgid "Favicon Icon URL"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:45
+msgid "Getting Started"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:261
+msgid "Getting Started with WPYog News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:44
+msgid "Getting Started — WPYog News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:268
+msgid "Go to WPYog News → Add News. Enter a title, content, featured image, and optionally set an External URL and Source Details."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:203
+msgid "How to use"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:314
+msgid "ID"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:209
+msgid "In Beaver Builder / SiteOrigin: use the HTML/Shortcode module."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:208
+msgid "In Divi: use the Code module."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:207
+msgid "In Elementor: use the Shortcode widget."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:206
+msgid "In Gutenberg: use a Shortcode block or the WPYog News block."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:113
+msgid "Layout"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:71
+msgid "Leave blank to use the internal news page URL."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:115
+msgid "List"
+msgstr ""
+
+#: includes/class-wpyog-scripts.php:42 includes/shortcode/class-wpyog-shortcode.php:313
+msgid "Load More"
+msgstr ""
+
+#: includes/class-wpyog-scripts.php:43
+msgid "Loading…"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:278
+msgid "Manage Categories"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:120
+msgid "New Category Name"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:66
+msgid "New News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:149
+msgid "Newest First (DESC)"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:61
+msgid "News"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:59
+msgctxt "Post type general name"
+msgid "News"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:111
+msgctxt "Taxonomy general name"
+msgid "News Categories"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:71
+msgid "News Image"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:60
+msgctxt "Post type singular name"
+msgid "News Item"
+msgstr ""
+
+#. translators: %s: URL to preview the news item. */
+#: includes/class-wpyog-post-types.php:167
+msgid "News draft updated. <a target=\"_blank\" href=\"%s\">Preview</a>"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:75
+msgid "News list"
+msgstr ""
+
+#: includes/shortcode/class-wpyog-shortcode.php:486
+msgid "News navigation"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:76
+msgid "News published."
+msgstr ""
+
+#. translators: %s: URL of the news item. */
+#: includes/class-wpyog-post-types.php:160
+msgid "News published. <a href=\"%s\">View News</a>"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:158
+msgid "News restored to revision from %s"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:161
+msgid "News saved."
+msgstr ""
+
+#. translators: 1: Scheduled date and time. 2: URL to preview the news item. */
+#: includes/class-wpyog-post-types.php:165
+msgid "News scheduled for: %1$s. <a target=\"_blank\" href=\"%2$s\">Preview</a>"
+msgstr ""
+
+#. translators: %s: URL to preview the news item. */
+#: includes/class-wpyog-post-types.php:163
+msgid "News submitted. <a target=\"_blank\" href=\"%s\">Preview</a>"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:155 includes/class-wpyog-post-types.php:77
+msgid "News updated."
+msgstr ""
+
+#. translators: %s: URL of the news item. */
+#: includes/class-wpyog-post-types.php:152
+msgid "News updated. <a href=\"%s\">View News</a>"
+msgstr ""
+
+#: includes/class-wpyog-functions.php:111
+msgid "Next"
+msgstr ""
+
+#: includes/shortcode/class-wpyog-shortcode.php:509
+msgid "Next →"
+msgstr ""
+
+#: includes/class-wpyog-scripts.php:44
+msgid "No more news"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:69
+msgid "No news found"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:70
+msgid "No news found in Trash"
+msgstr ""
+
+#: includes/shortcode/class-wpyog-shortcode.php:319
+msgid "No news found."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:130
+msgid "Number of posts"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:157
+msgid "Numeric"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:150
+msgid "Oldest First (ASC)"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:93
+msgid "Optionally credit the news source. The source name and favicon will be displayed on news cards."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:147
+msgid "Order"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:276
+msgid "Organise with Categories"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:155
+msgid "Pagination Type"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:115
+msgid "Parent Category"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:116
+msgid "Parent Category:"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:205
+msgid "Paste the shortcode into any page, post, or widget."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:158
+msgid "Prev / Next"
+msgstr ""
+
+#: includes/class-wpyog-functions.php:110
+msgid "Previous"
+msgstr ""
+
+#: includes/shortcode/class-wpyog-shortcode.php:220 includes/shortcode/class-wpyog-shortcode.php:271 includes/shortcode/class-wpyog-shortcode.php:433
+msgid "Read More"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:73
+msgid "Remove news image"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:113
+msgid "Search Categories"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:68
+msgid "Search News"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:72
+msgid "Set news image"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:109 includes/admin/class-wpyog-admin.php:35
+msgid "Shortcode Generator"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:34
+msgid "Shortcode Generator — WPYog News"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:168
+msgid "Show Date"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:176
+msgid "Show Excerpt"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:184
+msgid "Show Source"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:141
+msgid "Small icon (16×16 or 32×32) displayed next to the source name."
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:38
+msgid "Source Details"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:97
+msgid "Source Name"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:110
+msgid "Source URL"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:118
+msgid "Update Category"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:74
+msgid "Use as news image"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:286
+msgid "Use the shortcode generator to create a shortcode and paste it anywhere on your site."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:217
+msgid "Values"
+msgstr ""
+
+#: includes/class-wpyog-post-types.php:67
+msgid "View News"
+msgstr ""
+
+#: includes/blocks/class-wpyog-block.php:34
+msgid "WPYog News"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:57
+msgid "When an external URL is set, the news title and \"Read More\" link will point to this URL instead of the internal news detail page."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:296
+msgid "When editing a news item, fill in the External Link field to redirect clicks to an external article. Add Source Details to credit the publication."
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:194
+msgid "Your Shortcode"
+msgstr ""
+
+#: includes/shortcode/class-wpyog-shortcode.php:58
+msgid "[wpyog_news] — WPYog News shortcode"
+msgstr ""
+
+#: includes/admin/class-wpyog-metabox.php:104
+msgid "e.g. Reuters"
+msgstr ""
+
+#: includes/admin/class-wpyog-admin.php:138
+msgid "— All Categories —"
+msgstr ""
+
+#: includes/shortcode/class-wpyog-shortcode.php:494
+msgid "← Previous"
+msgstr ""
+

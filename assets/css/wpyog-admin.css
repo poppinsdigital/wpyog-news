@@ -1,0 +1,424 @@
+/**
+ * WPYog News — Admin Styles
+ * @package WPYog_News
+ */
+
+/* =========================================================
+   WPYog Custom Font — loaded for potential use elsewhere
+   The menu icon itself is rendered via SVG data URI set in PHP (menu_icon_svg()).
+   ========================================================= */
+@font-face {
+	font-family: 'wpyog';
+	src: url('../fonts/wpyog.eot');
+	src: url('../fonts/wpyog.eot?#iefix')  format('embedded-opentype'),
+	     url('../fonts/wpyog.woff')        format('woff'),
+	     url('../fonts/wpyog.ttf')         format('truetype'),
+	     url('../fonts/wpyog.svg#wpyog')   format('svg');
+	font-weight: normal;
+	font-style:  normal;
+	font-display: block;
+}
+
+/* =========================================================
+   Admin Header
+   ========================================================= */
+.wpyog-admin-wrap {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.wpyog-admin-header {
+	background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+	padding: 0;
+	margin: 0 0 0 -20px;
+	width: calc(100% + 20px);
+}
+
+.wpyog-admin-header-inner {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.25rem 2rem;
+}
+
+.wpyog-logo {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #fff;
+	letter-spacing: 0.02em;
+}
+
+.wpyog-version {
+	font-size: 0.75rem;
+	color: rgba(255,255,255,0.5);
+	background: rgba(255,255,255,0.1);
+	padding: 2px 8px;
+	border-radius: 12px;
+}
+
+.wpyog-admin-body {
+	padding: 2rem;
+	background: #f0f0f1;
+	min-height: calc(100vh - 80px);
+}
+
+/* =========================================================
+   Generator Tab Switcher
+   ========================================================= */
+.wpyog-gen-tabs {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 1.5rem;
+	border-bottom: 2px solid #ddd;
+	padding-bottom: 0;
+}
+
+.wpyog-gen-tab {
+	background: none;
+	border: none;
+	border-bottom: 3px solid transparent;
+	margin-bottom: -2px;
+	padding: 10px 20px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #666;
+	cursor: pointer;
+	transition: color 0.15s, border-color 0.15s;
+	border-radius: 4px 4px 0 0;
+}
+
+.wpyog-gen-tab:hover {
+	color: #3F51B5;
+	background: rgba(63,81,181,0.05);
+}
+
+.wpyog-gen-tab-active,
+.wpyog-gen-tab.wpyog-gen-tab-active {
+	color: #3F51B5;
+	border-bottom-color: #3F51B5;
+	background: #fff;
+}
+
+/* =========================================================
+   Shortcode Generator — Two-column layout
+   ========================================================= */
+.wpyog-generator-layout {
+	display: grid;
+	grid-template-columns: 340px 1fr;
+	gap: 1.5rem;
+	align-items: start;
+}
+
+.wpyog-generator-controls,
+.wpyog-generator-output {
+	background: #fff;
+	border: 1px solid #dcdcdc;
+	border-radius: 8px;
+	padding: 1.5rem;
+}
+
+.wpyog-generator-controls h2,
+.wpyog-generator-output h2 {
+	margin: 0 0 0.5rem;
+	font-size: 1.1rem;
+	color: #1a1a2e;
+	border-bottom: 2px solid #0073aa;
+	padding-bottom: 0.5rem;
+}
+
+.wpyog-generator-intro {
+	color: #666;
+	font-size: 0.85rem;
+	margin: 0 0 1.25rem;
+}
+
+/* Field group */
+.wpyog-field-group {
+	margin-bottom: 1rem;
+}
+
+.wpyog-field-group label:first-child {
+	display: block;
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: #444;
+	margin-bottom: 0.3rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.wpyog-field-group input[type="number"],
+.wpyog-field-group select {
+	width: 100%;
+	padding: 0.45rem 0.6rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 0.9rem;
+	background: #fafafa;
+}
+
+.wpyog-field-group input:focus,
+.wpyog-field-group select:focus {
+	border-color: #0073aa;
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.15);
+}
+
+/* Toggle row */
+.wpyog-toggle-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.wpyog-toggle-row label:first-child {
+	margin-bottom: 0;
+}
+
+/* Toggle switch */
+.wpyog-switch {
+	position: relative;
+	display: inline-block;
+	width: 44px;
+	height: 24px;
+	flex-shrink: 0;
+}
+
+.wpyog-switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.wpyog-slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0; left: 0; right: 0; bottom: 0;
+	background: #ccc;
+	border-radius: 24px;
+	transition: background 0.2s;
+}
+
+.wpyog-slider::before {
+	content: '';
+	position: absolute;
+	height: 18px;
+	width: 18px;
+	left: 3px;
+	bottom: 3px;
+	background: #fff;
+	border-radius: 50%;
+	transition: transform 0.2s;
+}
+
+.wpyog-switch input:checked + .wpyog-slider {
+	background: #0073aa;
+}
+
+.wpyog-switch input:checked + .wpyog-slider::before {
+	transform: translateX(20px);
+}
+
+/* =========================================================
+   Shortcode Output Box
+   ========================================================= */
+.wpyog-shortcode-preview {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: #f6f8fa;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	padding: 0.75rem 1rem;
+	margin-bottom: 1.5rem;
+	flex-wrap: wrap;
+}
+
+.wpyog-shortcode-preview code {
+	flex: 1;
+	font-size: 0.88rem;
+	color: #0073aa;
+	word-break: break-all;
+	background: transparent;
+}
+
+#wpyog-copy-code {
+	white-space: nowrap;
+}
+
+/* Usage Guide */
+.wpyog-usage-guide h3 {
+	font-size: 0.95rem;
+	margin: 1.5rem 0 0.5rem;
+	color: #333;
+}
+
+.wpyog-usage-guide ul {
+	margin: 0 0 0 1.25rem;
+	padding: 0;
+	list-style: disc;
+}
+
+.wpyog-usage-guide ul li {
+	font-size: 0.88rem;
+	color: #555;
+	margin-bottom: 0.3rem;
+}
+
+/* Attribute table */
+.wpyog-attr-table {
+	font-size: 0.83rem !important;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.wpyog-attr-table thead th {
+	background: #1a1a2e;
+	color: #fff !important;
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+}
+
+.wpyog-attr-table tbody td {
+	padding: 0.45rem 0.75rem;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.wpyog-attr-table tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.wpyog-attr-table td:first-child {
+	font-family: monospace;
+	color: #0073aa;
+	font-weight: 600;
+}
+
+/* =========================================================
+   Getting Started page
+   ========================================================= */
+.wpyog-getting-started h2 {
+	font-size: 1.4rem;
+	margin: 0 0 1.5rem;
+	color: #1a1a2e;
+}
+
+.wpyog-steps {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.wpyog-step {
+	display: flex;
+	gap: 1rem;
+	background: #fff;
+	border: 1px solid #dcdcdc;
+	border-radius: 8px;
+	padding: 1.25rem;
+	align-items: flex-start;
+}
+
+.wpyog-step-num {
+	flex: 0 0 40px;
+	height: 40px;
+	background: #0073aa;
+	color: #fff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	font-size: 1.1rem;
+}
+
+.wpyog-step-content h3 {
+	margin: 0 0 0.4rem;
+	font-size: 1rem;
+}
+
+.wpyog-step-content p {
+	margin: 0 0 0.75rem;
+	color: #555;
+	font-size: 0.9rem;
+}
+
+.wpyog-step-content code {
+	display: inline-block;
+	background: #f6f8fa;
+	padding: 0.3rem 0.6rem;
+	border-radius: 4px;
+	color: #0073aa;
+	font-size: 0.88rem;
+	margin-bottom: 0.5rem;
+}
+
+/* =========================================================
+   Metabox styles
+   ========================================================= */
+.wpyog-metabox-wrap {
+	padding: 0.5rem 0;
+}
+
+.wpyog-metabox-desc {
+	color: #666;
+	font-size: 0.85rem;
+	margin: 0 0 1rem;
+	background: #f6f8fa;
+	border-left: 3px solid #0073aa;
+	padding: 0.6rem 0.8rem;
+	border-radius: 0 4px 4px 0;
+}
+
+.wpyog-meta-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.wpyog-meta-table th {
+	width: 160px;
+	padding: 0.6rem 1rem 0.6rem 0;
+	text-align: left;
+	font-size: 0.88rem;
+	font-weight: 600;
+	color: #333;
+	vertical-align: middle;
+}
+
+.wpyog-meta-table td {
+	padding: 0.5rem 0;
+	vertical-align: middle;
+}
+
+.wpyog-meta-table tr {
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.wpyog-meta-table tr:last-child {
+	border-bottom: none;
+}
+
+.wpyog-meta-table .description {
+	font-size: 0.8rem;
+	color: #888;
+	margin: 0.3rem 0 0;
+}
+
+.wpyog-favicon-wrap {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.wpyog-favicon-wrap .widefat {
+	flex: 1;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media ( max-width: 900px ) {
+	.wpyog-generator-layout {
+		grid-template-columns: 1fr;
+	}
+}
