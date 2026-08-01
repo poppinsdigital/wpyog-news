@@ -164,6 +164,43 @@
 	box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.15);
 }
 
+/* Post Types checklist — used when mixing multiple CPTs into one layout */
+.wpyog-checkbox-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+	padding: 0.5rem 0.6rem;
+	background: #fafafa;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.wpyog-checkbox-item {
+	display: flex !important;
+	align-items: center;
+	gap: 0.35rem;
+	font-size: 0.85rem;
+	font-weight: 400 !important;
+	text-transform: none !important;
+	letter-spacing: normal !important;
+	margin-bottom: 0 !important;
+	cursor: pointer;
+}
+
+.wpyog-checkbox-item input[type="checkbox"] {
+	margin: 0;
+}
+
+.wpyog-field-group .description {
+	display: block;
+	font-size: 0.78rem;
+	color: #777;
+	margin-top: 0.35rem;
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: 400;
+}
+
 /* Toggle row */
 .wpyog-toggle-row {
 	display: flex;

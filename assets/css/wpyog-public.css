@@ -15,6 +15,8 @@
 .wpyog-news-wrap {
 	font-family: inherit;
 	margin: 0 0 2.5rem;
+	max-width: 100%;
+	min-width: 0;
 }
 
 /* =========================================================
@@ -106,6 +108,19 @@
 	color: #fff;
 }
 
+/* Post-type badge — shown when show_type="true" while mixing multiple post types */
+.wpyog-item-type {
+	display: inline-block;
+	padding: 0.15rem 0.65rem;
+	background: #eaeaea;
+	color: #555;
+	font-size: 0.72rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	border-radius: 20px;
+}
+
 /* =========================================================
    CARD LAYOUT
    ========================================================= */
@@ -132,6 +147,11 @@
 	transition: box-shadow 0.25s ease, transform 0.2s ease;
 	display: flex;
 	flex-direction: column;
+	/* Grid items default to min-width:auto, which lets long unbroken text
+	   (or a wide image) force the column past its 1fr share and overflow
+	   the row's right edge — especially in a narrower theme layout that
+	   has a sidebar. min-width:0 lets the column actually shrink to fit. */
+	min-width: 0;
 }
 
 .wpyog-card-item:hover {
@@ -169,7 +189,7 @@
 }
 
 .wpyog-card-no-thumb {
-	height: 160px;
+	height: 210px; /* matches .wpyog-card-thumb img so all thumbs line up evenly */
 	background: linear-gradient(135deg, #3F51B5 0%, #5C6BC0 60%, #7986CB 100%);
 }
 
@@ -203,6 +223,14 @@
 	background: rgba(40, 53, 147, 0.95);
 }
 
+.wpyog-card-cats .wpyog-item-type {
+	background: rgba(20, 20, 20, 0.75);
+	color: #fff;
+	padding: 1rem 0.9rem;
+	font-size: 0.68rem;
+	backdrop-filter: blur(4px);
+}
+
 /* Card body */
 .wpyog-card-body {
 	padding: 1.1rem 1.2rem 0.6rem;
@@ -234,6 +262,8 @@
 	font-size: 1.4rem;
 	line-height: 1.45;
 	font-weight: bold;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
 .wpyog-item-title a {
@@ -259,6 +289,8 @@
 	color: #4c4b4b;
 	line-height: 1.6;
 	margin: 0;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
 /* Card excerpt — slightly smaller */
@@ -519,9 +551,10 @@
 	}
 
 	.wpyog-layout-card .wpyog-news-card-container,
+	.wpyog-layout-card.wpyog-cols-2 .wpyog-news-card-container,
 	.wpyog-layout-card.wpyog-cols-3 .wpyog-news-card-container,
 	.wpyog-layout-card.wpyog-cols-4 .wpyog-news-card-container {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: 1fr;
 	}
 
 	.wpyog-nav-links {
@@ -921,6 +954,235 @@
 @media (prefers-reduced-motion: reduce) {
 	.wpyog-ticker-track {
 		animation-play-state: paused !important;
+	}
+}
+
+/* =========================================================
+   NEWS CAROUSEL
+   ========================================================= */
+
+.wpyog-carousel-wrap {
+	position: relative;
+	margin: 0 auto;
+}
+
+/* ── Viewport — clips the sliding track ───────────────── */
+.wpyog-carousel-viewport {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+
+/* ── Track — holds all slides side by side ────────────── */
+.wpyog-carousel-track {
+	display: flex;
+	align-items: stretch;
+	will-change: transform;
+}
+
+.wpyog-carousel-wrap[data-transition="slide"] .wpyog-carousel-track {
+	transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wpyog-carousel-wrap[data-transition="fade"] .wpyog-carousel-track {
+	transition: opacity 0.4s ease;
+}
+
+/* ── Slide sizing — number of visible slides ──────────── */
+.wpyog-carousel-item {
+	flex: 0 0 33.3333%;
+	max-width: 33.3333%;
+	min-width: 0;
+}
+
+/* flex-shrink is 0 (see .wpyog-carousel-item above), so these items are
+   rigid — they will NOT shrink to make room for the track's `gap`. A plain
+   percentage (e.g. 3 items at 33.3333% = ~100% already) plus 2 gaps on top
+   is guaranteed to overflow the viewport by (gaps × gap-width), and that
+   overflow is exactly what gets clipped off the last card. Subtracting the
+   gap total inside calc() before dividing is what actually fixes it —
+   --wpyog-carousel-gap is set inline per-shortcode from the `gap` attribute
+   (see class-wpyog-shortcode.php), with a 20px fallback if it's ever unset. */
+.wpyog-layout-carousel.wpyog-slides-1 .wpyog-carousel-item {
+	flex: 0 0 100%;
+	max-width: 100%;
+}
+.wpyog-layout-carousel.wpyog-slides-2 .wpyog-carousel-item {
+	flex: 0 0 calc((100% - (1 * var(--wpyog-carousel-gap, 20px))) / 2);
+	max-width: calc((100% - (1 * var(--wpyog-carousel-gap, 20px))) / 2);
+}
+.wpyog-layout-carousel.wpyog-slides-3 .wpyog-carousel-item {
+	flex: 0 0 calc((100% - (2 * var(--wpyog-carousel-gap, 20px))) / 3);
+	max-width: calc((100% - (2 * var(--wpyog-carousel-gap, 20px))) / 3);
+}
+.wpyog-layout-carousel.wpyog-slides-4 .wpyog-carousel-item {
+	flex: 0 0 calc((100% - (3 * var(--wpyog-carousel-gap, 20px))) / 4);
+	max-width: calc((100% - (3 * var(--wpyog-carousel-gap, 20px))) / 4);
+}
+.wpyog-layout-carousel.wpyog-slides-5 .wpyog-carousel-item {
+	flex: 0 0 calc((100% - (4 * var(--wpyog-carousel-gap, 20px))) / 5);
+	max-width: calc((100% - (4 * var(--wpyog-carousel-gap, 20px))) / 5);
+}
+
+/* Carousel cards reuse .wpyog-card-item visuals but stretch full height,
+   get their own breathing-room margin, and skip the grid's hover-lift
+   (lifting a card inside a sliding track looks glitchy next to its neighbours). */
+.wpyog-carousel-item.wpyog-card-item {
+	height: auto;
+	/* Vertical-only margin: gives the shadow/hover state breathing room above
+	   and below each card. Horizontal spacing between slides is handled by
+	   the track's flex `gap` (the shortcode's `gap` attribute) instead of
+	   margin — flex-basis percentages (33.3333% etc.) already add up to
+	   exactly 100% of the row, so any *horizontal* margin on top of that
+	   pushes the row wider than its viewport and gets clipped by
+	   .wpyog-carousel-viewport's overflow:hidden, which is what was cutting
+	   the last card off on the right. `gap` doesn't have this problem —
+	   browsers subtract it from the row's available width before applying
+	   flex-basis, so it can never cause overflow. */
+	margin: 20px 0;
+}
+
+.wpyog-carousel-item.wpyog-card-item:hover {
+	transform: none;
+}
+
+/* ── Arrows ────────────────────────────────────────────────────────────
+   Colours are pinned with !important — WordPress themes frequently ship
+   global `button` resets (background, border-radius, box-shadow) that
+   would otherwise bleed into these controls and override the plugin's
+   own styling. */
+.wpyog-carousel-wrap .wpyog-carousel-arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 42px;
+	height: 42px;
+	border-radius: 50% !important;
+	background-color: #ffffff !important;
+	border: 1px solid #e6e6e6 !important;
+	color: #1a1a2e !important;
+	-webkit-appearance: none;
+	appearance: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14) !important;
+	z-index: 3;
+	padding: 0;
+	margin: 0;
+	transition: opacity 0.25s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wpyog-carousel-wrap .wpyog-carousel-arrow:hover {
+	background-color: #3F51B5 !important;
+	color: #ffffff !important;
+	box-shadow: 0 6px 18px rgba(63, 81, 181, 0.3) !important;
+}
+
+.wpyog-carousel-wrap .wpyog-carousel-arrow:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+	box-shadow: none !important;
+}
+
+.wpyog-carousel-prev { left: -21px; }
+.wpyog-carousel-next { right: -21px; }
+
+/* Arrows-on-hover mode: hidden until the carousel is hovered (desktop /
+   fine-pointer devices only — touch devices have no hover state, so
+   arrows always stay visible there for usability). */
+.wpyog-carousel-wrap[data-arrows-on-hover="true"] .wpyog-carousel-arrow {
+	opacity: 0;
+	pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.wpyog-carousel-wrap[data-arrows-on-hover="true"]:hover .wpyog-carousel-arrow,
+	.wpyog-carousel-wrap[data-arrows-on-hover="true"] .wpyog-carousel-arrow:focus-visible {
+		opacity: 1;
+		pointer-events: auto;
+	}
+}
+
+@media (hover: none) {
+	.wpyog-carousel-wrap[data-arrows-on-hover="true"] .wpyog-carousel-arrow {
+		opacity: 1 !important;
+		pointer-events: auto !important;
+	}
+}
+
+/* ── Dots ─────────────────────────────────────────────────────────────
+   Same theme-override protection as the arrows above. */
+.wpyog-carousel-dots {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 1.5rem;
+}
+
+.wpyog-carousel-wrap .wpyog-carousel-dot {
+	width: 9px !important;
+	height: 9px !important;
+	min-width: 0;
+	border-radius: 50% !important;
+	background-color: #d8d8e2 !important;
+	border: none !important;
+	-webkit-appearance: none;
+	appearance: none;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	box-shadow: none !important;
+	transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.wpyog-carousel-wrap .wpyog-carousel-dot:hover {
+	background-color: #9fa8da !important;
+}
+
+.wpyog-carousel-wrap .wpyog-carousel-dot.wpyog-carousel-dot-active {
+	background-color: #3F51B5 !important;
+	transform: scale(1.25);
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	.wpyog-carousel-track {
+		transition: none !important;
+	}
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────
+   Tablet and below: show exactly one slide at a time, regardless of the
+   configured slides_to_show — matches the Card grid layout's mobile
+   behaviour so both layouts feel consistent on small screens. */
+@media ( max-width: 900px ) {
+	.wpyog-layout-carousel.wpyog-slides-1 .wpyog-carousel-item,
+	.wpyog-layout-carousel.wpyog-slides-2 .wpyog-carousel-item,
+	.wpyog-layout-carousel.wpyog-slides-3 .wpyog-carousel-item,
+	.wpyog-layout-carousel.wpyog-slides-4 .wpyog-carousel-item,
+	.wpyog-layout-carousel.wpyog-slides-5 .wpyog-carousel-item {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+
+	.wpyog-carousel-item.wpyog-card-item {
+		margin: 12px 0;
+	}
+
+	/* Arrows-on-hover has no effect on touch anyway (see hover:none rule
+	   above), but keep them inset so they don't overlap page edges. */
+	.wpyog-carousel-prev { left: 6px; }
+	.wpyog-carousel-next { right: 6px; }
+}
+
+@media ( max-width: 600px ) {
+	.wpyog-carousel-wrap .wpyog-carousel-arrow {
+		width: 34px;
+		height: 34px;
 	}
 }
 

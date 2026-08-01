@@ -3,12 +3,12 @@ Contributors: wpyog
 Tags: news, news ticker, news widget, news list, news grid
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 1.1.4
+Stable tag: 1.4.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Create modern news sections, announcements, and article showcases with List, Card, and Ticker displays — all without coding.
+Create modern news sections, announcements, and article showcases with List, Card, Carousel, and Ticker displays — all without coding.
 
 == Description ==
 
@@ -24,7 +24,9 @@ Whether you are publishing company announcements, school notices, cybersecurity 
 
 = Key Features =
 
-* Modern List and Card layouts
+* Modern List, Card, and Carousel layouts
+* Mix multiple post types (News, Posts, Products, custom CPTs) into a single layout
+* Repeatable curated Collections — tag posts from any post type, pull them all in with one attribute
 * News Ticker with Scroll, Fade, and Flap (push-up) animations
 * Built-in Shortcode Generator — no coding needed
 * Category and tag support
@@ -41,6 +43,12 @@ Whether you are publishing company announcements, school notices, cybersecurity 
 **List Layout** — Perfect for company updates, announcements, editorial/news websites, blogs, and industry news feeds.
 
 **Card Layout** — Ideal for featured news sections, homepage highlights, magazine-style displays, and modern content showcases.
+
+**Carousel Layout** — A sliding row of news cards with autoplay, arrows, dot navigation, and a true infinite loop (the last slide slides out and the first slides back in from the right — no reverse jump). Great for homepage highlights, sidebars, and any spot where a full grid would take up too much room. Mix WPYog News with Posts, Products, or any custom post type, or pull in a curated Collection — all in the same sliding carousel.
+
+`[wpyog_news layout="carousel" slides_to_show="3" autoplay="true" autoplay_speed="4000" infinite="true" arrows="true" dots="true" transition="slide"]`
+
+`[wpyog_news layout="carousel" post_type="post,wpyog_document,wpyog_news" collection="homepage-picks" slides_to_show="3"]`
 
 = News Ticker =
 
@@ -91,6 +99,16 @@ WPYog News supports curated external news workflows with external article URLs, 
 **`pagination_type`** — Pagination style (list layout only). Options: `numeric` or `prev-next`. Default: `numeric`
 
 **`extra_class`** — Add a custom CSS class to the wrapper. Default: none
+
+**`post_type`** — Mix WPYog News with other post types in the same layout. Comma-separated CPT slugs, e.g. `post_type="wpyog_news,post,product"`. Only shared fields (title, excerpt, featured image, date) are used for mixed items — anything WPYog-News-specific (External URL, Source Details) is simply skipped for items that don't have it. Default: `wpyog_news`
+
+**`taxonomy`** — Taxonomy the `category` attribute filters against. Default: `wpyog_news_cat`. Only change this if the other post types you're mixing in share a different taxonomy (e.g. `category`) — WPYog News's own category taxonomy only applies to `wpyog_news` items.
+
+**`show_type`** — Show a small badge with each item's post type label (e.g. "News", "Post") — handy for telling sources apart when mixing post types. Options: `true` or `false`. Default: `false`
+
+**`ids`** — Hand-pick exact posts to display, across any mix of post types — no shared category needed. Comma-separated post IDs, e.g. `ids="12,45,78"`. Overrides `limit`, `category`, and pagination; posts appear in the order listed unless `orderby` is set to something else. Find a post's ID from the URL when editing it (`post.php?post=123`).
+
+**`collection`** — Show a repeatable curated group of posts spanning any mix of post types, without editing the shortcode as the group grows. Tick the checkbox for a "Collection" on any post from its normal edit screen (or click "+ Add New Collection" to create one — no shortcode needed), then pull them all in with `collection="homepage-picks"` (comma-separated slugs for more than one). Combines with `category` (both must match) but is ignored when `ids` is set.
 
 = [wpyog_ticker] — Shortcode Attributes =
 
@@ -173,6 +191,18 @@ Yes. WPYog News includes a built-in shortcode generator with two tabs — one fo
 = Can I filter news by category? =
 Yes. News posts can be grouped and filtered using categories. Use the `category` attribute with the category ID: `[wpyog_news category="5"]`. Category IDs are shown in WPYog News → Categories.
 
+= Can I mix WPYog News with other post types (like Posts or WooCommerce Products) in one layout? =
+Yes. Add the `post_type` attribute with a comma-separated list of post type slugs, e.g. `[wpyog_news post_type="wpyog_news,post,product" layout="carousel"]`. Only the fields shared across all post types — title, excerpt, featured image, and date — are shown. External URL and Source Details still display for `wpyog_news` items but are simply skipped for other post types. The Shortcode Generator and Gutenberg block both include a Post Types checklist for this.
+
+= I want to mix content from different post types but only show a hand-picked selection, not everything in a category — how? =
+Two ways, depending on whether the selection is a one-off or something you'll keep adding to:
+
+For a one-off selection, use the `ids` attribute. It takes a comma-separated list of post IDs and works across any mix of post types since it doesn't rely on a shared taxonomy: `[wpyog_news post_type="wpyog_news,post,product" ids="12,45,78"]`. Posts show in the exact order you list the IDs. Find a post's ID from its edit-screen URL (`post.php?post=123`).
+
+For a selection you'll keep adding to over time, use a Collection instead — it's repeatable, so you never have to edit the shortcode again. Open any post (News, a Blog Post, a Product, any post type) and in its Collections box, tick the checkbox for the collection you want (or click "+ Add New Collection" to create one, e.g. "Homepage Picks"). Tick the same collection on posts from other post types too, then show them all with `[wpyog_news post_type="wpyog_news,post,product" collection="homepage-picks"]`. New posts checked into the collection later appear automatically — no shortcode edits.
+
+Both the Shortcode Generator and the Gutenberg block have fields for `ids` and `collection`.
+
 = Is the plugin mobile responsive? =
 Yes. All layouts are optimized for desktop, tablet, and mobile devices. The News Ticker automatically adjusts its label and font size on small screens.
 
@@ -197,10 +227,63 @@ Yes. Add `show_count="true"` to `[wpyog_ticker]` to display a "3 / 10" badge on 
 2. Front-end card layout with Load More button.
 3. News Ticker — scroll animation with label chip and counter badge.
 4. News item editor — External Link and Source Details metaboxes.
-5. Shortcode Generator — News List tab with live preview.
-6. Shortcode Generator — News Ticker tab with all options.
+5. Shortcode Generator — News List tab with all options.
+6. Shortcode Generator — mix WPYog News with any post type (Posts, Pages, Products, custom CPTs), pick a Collection, and see every shortcode attribute at a glance.
+7. Getting Started — the 4-step setup guide, including building a repeatable curated Collection.
+8. Carousel layout mixing WPYog News with other post types — type badges, arrows, and dot navigation.
+9. Card layout combining a Collection with mixed post types (Posts, Documents, and WPYog News) in one grid.
 
 == Changelog ==
+
+= 1.4.2 =
+* Fixed: Carousel infinite loop now wraps correctly — after the last slide, the first slide slides in from the right and continues in the same direction, instead of reversing back to slide 1.
+
+= 1.4.1 =
+* Changed: Collections now use the same checkbox-list meta box as Categories (with a "+ Add New Collection" toggle to create one inline), instead of the type-to-search tag-style box. Tick a box on any post to add it to a collection — no searching for the existing collection name required.
+
+= 1.4.0 =
+* Added: Collections — a new `wpyog_collection` taxonomy shared across every public post type, used to build a repeatable curated group of posts spanning any mix of post types. Tag posts from their normal edit screen (like adding a tag) and pull them all into a layout with the new `collection` attribute — no editing the shortcode as the collection grows.
+* Added: Collection dropdown in the Shortcode Generator (with a helpful empty state until the first collection is created) and a Collection control in the Gutenberg block's Query panel.
+* Added: "Build a Repeatable Curated Collection" step and a Manage Collections link on the Getting Started admin page.
+* Changed: Post type list logic for the checklist/dropdowns is now shared via one helper function, so the mixable and taggable post type lists always stay in sync.
+
+= 1.3.1 =
+* Added: `ids` attribute — hand-pick exact posts to display, across any mix of post types, without needing a shared category/taxonomy. Comma-separated post IDs, e.g. `ids="12,45,78"`; overrides `limit`, `category`, and pagination, and preserves the listed order. Available in the shortcode, the Shortcode Generator (Specific Post IDs field), and the Gutenberg block (Advanced panel).
+
+= 1.3.0 =
+* Added: Mix multiple post types into one `[wpyog_news]` layout via the new `post_type` attribute (comma-separated CPT slugs) — e.g. combine WPYog News with Posts, WooCommerce Products, or any custom post type in the same List, Card, or Carousel display. Only shared fields (title, excerpt, featured image, date) are used for mixed items; WPYog-News-specific fields (External URL, Source Details) are skipped gracefully for other post types.
+* Added: `taxonomy` attribute — lets the `category` filter target a different taxonomy when mixing post types that share one (e.g. `category`).
+* Added: `show_type` attribute — shows a small badge with each item's post type label, useful for telling sources apart in a mixed feed.
+* Added: Post Types checklist in the Shortcode Generator admin page and the Gutenberg block Inspector controls.
+* Added: Load More (card layout) now correctly carries the selected post types, taxonomy, and badge setting across AJAX pages.
+
+= 1.2.4 =
+* Fixed: Carousel's last card still clipped on the right when `gap` was greater than 0 (confirmed via live testing — cutting disappeared at `gap="0"`). Real root cause: carousel items use `flex-shrink: 0` (they're meant to stay a fixed size), so they never shrink to make room for the track's `gap` — a plain percentage flex-basis (e.g. 3 items at 33.3333%) already fills the row, and the gap on top of that always overflows by exactly (number of gaps × gap width), which is what was being clipped. Fixed by computing each slide's width with `calc((100% - (n-1) × gap) / n)` instead of a flat percentage, so the gap is subtracted before dividing. Gap now works at any value without cutting off the last slide.
+
+= 1.2.3 =
+* Fixed: Carousel's last visible card was being clipped on the right (confirmed on the live demo at slides_to_show="3"). Root cause: the 1.2.2 card margin (`20px 6px`) added horizontal margin on top of flex-basis percentages that already summed to 100% of the row — the extra margin pushed the row wider than the viewport, and the viewport's overflow:hidden sliced off the overflow. Fixed by making the card margin vertical-only (`20px 0`); horizontal spacing between slides is handled by the track's `gap` instead, which browsers correctly account for when sizing flex-basis so it can't overflow.
+
+= 1.2.2 =
+* Fixed: Card grid's rightmost column could get clipped/overflow in narrower theme layouts (e.g. with a sidebar) when a title or image forced a column past its share of the row — grid/flex items now correctly allow shrinking (`min-width: 0`), and long titles/excerpts wrap instead of forcing overflow.
+* Changed: Card and Carousel layouts now go straight to a single column/slide at tablet width (≤900px / ≤768px) instead of an intermediate 2-column step, so mobile visitors see one full-width card at a time.
+
+= 1.2.1 =
+* Fixed: Carousel prev/next arrows and dots no longer inherit theme button styling — colours, borders, and shape are now pinned by the plugin so dots render fully circular on every theme.
+* Added: `arrows_on_hover` carousel attribute — arrows stay hidden until the carousel is hovered (desktop only; always visible on touch devices).
+* Changed: Removed the card hover-lift (translateY) effect specifically for Carousel items — it looked glitchy next to neighbouring slides in a moving track. Card grid layout keeps the lift.
+* Changed: Carousel cards now get their own `20px 6px` margin for breathing room between and around slides.
+* Fixed: `.wpyog-card-no-thumb` height now matches the real thumbnail height (210px, was 160px), so cards with and without a featured image line up evenly — affects Card grid and Carousel.
+* Improved: Carousel slide-position math now measures real rendered spacing between slides instead of parsing CSS gap, so it stays accurate with the new card margins and any future spacing tweaks.
+
+= 1.2.0 =
+* Added: New Carousel layout for `[wpyog_news]` — `layout="carousel"`. A sliding row of news cards with autoplay, prev/next arrows, dot navigation, infinite loop, slide or fade transition, touch swipe support, and responsive slides-to-show.
+* Added: Carousel attributes — `slides_to_show`, `autoplay`, `autoplay_speed`, `infinite`, `arrows`, `dots`, `pause_on_hover`, `transition`, `gap`.
+* Added: Carousel option to the Shortcode Generator admin page with live-updating preview.
+* Added: Carousel support in the native Gutenberg block, including Inspector controls for all carousel options.
+* Added: Lightweight vanilla-JS carousel engine (no external slider library, no jQuery dependency) respecting `prefers-reduced-motion`.
+
+= 1.1.5 =
+* Screenshots and banner updated
 
 = 1.1.4 =
 * Improved: Replaced the experimental split-flap animation with a reliable push-up slide for the `flap` animation mode — current headline slides out upward while the next headline slides in from below, clipped cleanly by the ticker viewport. Works consistently across all browsers.
@@ -265,6 +348,18 @@ Yes. Add `show_count="true"` to `[wpyog_ticker]` to display a "3 / 10" badge on 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.4.2 =
+Fixes the carousel's infinite loop so it always slides forward (the first slide enters from the right after the last one) instead of reversing back to slide 1. Recommended update for anyone using the carousel layout with infinite loop enabled.
+
+= 1.4.1 =
+Collections now use a checkbox-list (like Categories) instead of a type-to-search tag box — tick a box to add a post to a collection, or click "+ Add New Collection" to create one. Recommended update for anyone using Collections.
+
+= 1.4.0 =
+Adds Collections — a repeatable way to build a curated group of posts across any mix of post types by tagging them from their edit screen, then pulling them in with the new `collection` attribute. No shortcode edits needed as the collection grows. Recommended update for all users mixing post types.
+
+= 1.3.0 =
+Adds the `post_type` attribute to mix WPYog News with other post types (Posts, Products, custom CPTs) in one List, Card, or Carousel layout, plus a Post Types checklist in the Shortcode Generator and Gutenberg block. Recommended update for all users.
 
 = 1.1.4 =
 Improves the Flap ticker animation (push-up slide replacing experimental split-flap), fixes admin table header colour, and updates category pill padding. Recommended update for all 1.1.x users.

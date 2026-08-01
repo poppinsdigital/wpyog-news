@@ -91,6 +91,15 @@ class WPYOG_Admin {
 			'taxonomy'   => WPYOG_NEWS_CAT,
 			'hide_empty' => false,
 		) );
+
+		// Fetch public post types so users can mix WPYog News with other CPTs.
+		$selectable_post_types = wpyog_news_get_mixable_post_types();
+
+		// Fetch existing Collections (curated groups spanning any mix of post types).
+		$collections = get_terms( array(
+			'taxonomy'   => WPYOG_COLLECTION_TAX,
+			'hide_empty' => false,
+		) );
 		?>
 		<div class="wrap wpyog-admin-wrap">
 			<div class="wpyog-admin-header">
@@ -128,7 +137,29 @@ class WPYOG_Admin {
 								<select id="wg-layout">
 									<option value="list"><?php esc_html_e( 'List', 'wpyog-news' ); ?></option>
 									<option value="card"><?php esc_html_e( 'Card', 'wpyog-news' ); ?></option>
+									<option value="carousel"><?php esc_html_e( 'Carousel', 'wpyog-news' ); ?></option>
 								</select>
+							</div>
+
+							<div class="wpyog-field-group">
+								<label><?php esc_html_e( 'Post Types to Include', 'wpyog-news' ); ?></label>
+								<div class="wpyog-checkbox-list">
+									<?php foreach ( $selectable_post_types as $pt ) : ?>
+										<label class="wpyog-checkbox-item">
+											<input type="checkbox" class="wg-post-type" value="<?php echo esc_attr( $pt->name ); ?>" <?php checked( WPYOG_NEWS_POST_TYPE === $pt->name ); ?> />
+											<?php echo esc_html( $pt->labels->singular_name ); ?>
+										</label>
+									<?php endforeach; ?>
+								</div>
+								<p class="description"><?php esc_html_e( 'Mix WPYog News with other content types (Posts, Products, etc.) in the same layout. Only common fields — title, excerpt, featured image, date — are used for mixed items.', 'wpyog-news' ); ?></p>
+							</div>
+
+							<div class="wpyog-field-group wpyog-toggle-row wpyog-post-types-multi-only" style="display:none;">
+								<label><?php esc_html_e( 'Show Post Type Badge', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-show-type" />
+									<span class="wpyog-slider"></span>
+								</label>
 							</div>
 
 							<div class="wpyog-field-group wpyog-card-only" style="display:none;">
@@ -137,6 +168,17 @@ class WPYOG_Admin {
 									<option value="2">2</option>
 									<option value="3" selected>3</option>
 									<option value="4">4</option>
+								</select>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only" style="display:none;">
+								<label><?php esc_html_e( 'Slides to Show (carousel only)', 'wpyog-news' ); ?></label>
+								<select id="wg-slides-to-show">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3" selected>3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
 								</select>
 							</div>
 
@@ -158,6 +200,24 @@ class WPYOG_Admin {
 							<?php endif; ?>
 
 							<div class="wpyog-field-group">
+								<label><?php esc_html_e( 'Collection (optional)', 'wpyog-news' ); ?></label>
+								<?php if ( ! empty( $collections ) && ! is_wp_error( $collections ) ) : ?>
+									<select id="wg-collection">
+										<option value=""><?php esc_html_e( '— No Collection —', 'wpyog-news' ); ?></option>
+										<?php foreach ( $collections as $term ) : ?>
+											<option value="<?php echo esc_attr( $term->slug ); ?>"><?php echo esc_html( $term->name ); ?></option>
+										<?php endforeach; ?>
+									</select>
+									<p class="description"><?php esc_html_e( 'A repeatable curated group spanning any mix of post types — tick the box on any post to add it. Works with the Post Types checklist above; if a Category is also set, only posts matching both will show.', 'wpyog-news' ); ?></p>
+								<?php else : ?>
+									<select id="wg-collection" disabled>
+										<option value=""><?php esc_html_e( '— No Collections Yet —', 'wpyog-news' ); ?></option>
+									</select>
+									<p class="description"><?php esc_html_e( 'No collections yet. Open any post (News, Blog Post, Product, etc.), click "+ Add New Collection" in its Collections box to create one, then refresh this page.', 'wpyog-news' ); ?></p>
+								<?php endif; ?>
+							</div>
+
+							<div class="wpyog-field-group">
 								<label><?php esc_html_e( 'Order', 'wpyog-news' ); ?></label>
 								<select id="wg-order">
 									<option value="DESC"><?php esc_html_e( 'Newest First (DESC)', 'wpyog-news' ); ?></option>
@@ -171,6 +231,72 @@ class WPYOG_Admin {
 									<option value="numeric"><?php esc_html_e( 'Numeric', 'wpyog-news' ); ?></option>
 									<option value="prev-next"><?php esc_html_e( 'Prev / Next', 'wpyog-news' ); ?></option>
 								</select>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only" style="display:none;">
+								<label><?php esc_html_e( 'Transition', 'wpyog-news' ); ?></label>
+								<select id="wg-transition">
+									<option value="slide"><?php esc_html_e( 'Slide', 'wpyog-news' ); ?></option>
+									<option value="fade"><?php esc_html_e( 'Fade', 'wpyog-news' ); ?></option>
+								</select>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only" style="display:none;">
+								<label><?php esc_html_e( 'Autoplay Speed (ms)', 'wpyog-news' ); ?></label>
+								<input type="number" id="wg-autoplay-speed" value="4000" min="1000" max="15000" step="500" />
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only" style="display:none;">
+								<label><?php esc_html_e( 'Gap Between Slides (px)', 'wpyog-news' ); ?></label>
+								<input type="number" id="wg-gap" value="20" min="0" max="80" />
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only wpyog-toggle-row" style="display:none;">
+								<label><?php esc_html_e( 'Autoplay', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-autoplay" checked />
+									<span class="wpyog-slider"></span>
+								</label>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only wpyog-toggle-row" style="display:none;">
+								<label><?php esc_html_e( 'Pause on Hover', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-pause-on-hover" checked />
+									<span class="wpyog-slider"></span>
+								</label>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only wpyog-toggle-row" style="display:none;">
+								<label><?php esc_html_e( 'Infinite Loop', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-infinite" checked />
+									<span class="wpyog-slider"></span>
+								</label>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only wpyog-toggle-row" style="display:none;">
+								<label><?php esc_html_e( 'Show Arrows', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-arrows" checked />
+									<span class="wpyog-slider"></span>
+								</label>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only wpyog-toggle-row" style="display:none;">
+								<label><?php esc_html_e( 'Arrows Only on Hover', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-arrows-on-hover" />
+									<span class="wpyog-slider"></span>
+								</label>
+							</div>
+
+							<div class="wpyog-field-group wpyog-carousel-only wpyog-toggle-row" style="display:none;">
+								<label><?php esc_html_e( 'Show Dots', 'wpyog-news' ); ?></label>
+								<label class="wpyog-switch">
+									<input type="checkbox" id="wg-dots" checked />
+									<span class="wpyog-slider"></span>
+								</label>
 							</div>
 
 							<div class="wpyog-field-group">
@@ -200,6 +326,12 @@ class WPYOG_Admin {
 									<input type="checkbox" id="wg-show-source" checked />
 									<span class="wpyog-slider"></span>
 								</label>
+							</div>
+
+							<div class="wpyog-field-group">
+								<label><?php esc_html_e( 'Specific Post IDs (optional)', 'wpyog-news' ); ?></label>
+								<input type="text" id="wg-ids" placeholder="e.g. 12,45,78" />
+								<p class="description"><?php esc_html_e( 'Hand-pick exact posts to show, across any mix of post types — no shared category needed. Overrides Number of Posts, Category, and pagination. Find an ID from the URL when editing a post (post.php?post=123).', 'wpyog-news' ); ?></p>
 							</div>
 						</div><!-- .wpyog-generator-controls -->
 
@@ -242,6 +374,34 @@ class WPYOG_Admin {
 										<tr><td>columns</td><td>2 | 3 | 4</td><td>3 (card only)</td></tr>
 										<tr><td>pagination_type</td><td>numeric | prev-next</td><td>numeric</td></tr>
 										<tr><td>extra_class</td><td>CSS class string</td><td>(none)</td></tr>
+										<tr><td>post_type</td><td>CPT slug(s), comma-separated</td><td>wpyog_news</td></tr>
+										<tr><td>taxonomy</td><td>taxonomy slug</td><td>wpyog_news_cat</td></tr>
+										<tr><td>show_type</td><td>true | false</td><td>false</td></tr>
+										<tr><td>ids</td><td>post ID(s), comma-separated</td><td>(none)</td></tr>
+										<tr><td>collection</td><td>collection slug(s), comma-separated</td><td>(none)</td></tr>
+									</tbody>
+								</table>
+
+								<p class="description"><?php esc_html_e( 'Mixing post types: use post_type to combine WPYog News with other content types in one layout — only shared fields (title, excerpt, featured image, date) are shown for mixed items. The category filter only matches WPYog News items unless the other post types share the same taxonomy. To show a hand-picked selection instead of a category, use ids — it works across any mix of post types and overrides category and limit.', 'wpyog-news' ); ?></p>
+
+								<h3><?php esc_html_e( 'Carousel-only attributes', 'wpyog-news' ); ?></h3>
+								<table class="wpyog-attr-table widefat">
+									<thead><tr>
+										<th><?php esc_html_e( 'Attribute', 'wpyog-news' ); ?></th>
+										<th><?php esc_html_e( 'Values', 'wpyog-news' ); ?></th>
+										<th><?php esc_html_e( 'Default', 'wpyog-news' ); ?></th>
+									</tr></thead>
+									<tbody>
+										<tr><td>slides_to_show</td><td>1 - 5</td><td>3</td></tr>
+										<tr><td>autoplay</td><td>true | false</td><td>true</td></tr>
+										<tr><td>autoplay_speed</td><td>integer (ms)</td><td>4000</td></tr>
+										<tr><td>infinite</td><td>true | false</td><td>true</td></tr>
+										<tr><td>arrows</td><td>true | false</td><td>true</td></tr>
+										<tr><td>arrows_on_hover</td><td>true | false</td><td>false</td></tr>
+										<tr><td>dots</td><td>true | false</td><td>true</td></tr>
+										<tr><td>pause_on_hover</td><td>true | false</td><td>true</td></tr>
+										<tr><td>transition</td><td>slide | fade</td><td>slide</td></tr>
+										<tr><td>gap</td><td>integer (px)</td><td>20</td></tr>
 									</tbody>
 								</table>
 							</div>
@@ -458,15 +618,25 @@ class WPYOG_Admin {
 					<div class="wpyog-step">
 						<div class="wpyog-step-num">3</div>
 						<div class="wpyog-step-content">
-							<h3><?php esc_html_e( 'Display News on Your Site', 'wpyog-news' ); ?></h3>
-							<p><?php esc_html_e( 'Use the shortcode generator to create a shortcode and paste it anywhere on your site.', 'wpyog-news' ); ?></p>
-							<code>[wpyog_news layout="list" limit="10"]</code><br /><br />
-							<code>[wpyog_news layout="card" columns="3" limit="9"]</code>
+							<h3><?php esc_html_e( 'Build a Repeatable Curated Collection', 'wpyog-news' ); ?></h3>
+							<p><?php esc_html_e( 'Open any post — News, a Blog Post, a Product, any post type — and in its Collections box, click "+ Add New Collection" to create one (e.g. "Homepage Picks"), or just tick the box if it already exists. Tick the same collection on posts from any other post type. Then pull them all together with collection="homepage-picks" — no editing the shortcode as the collection grows.', 'wpyog-news' ); ?></p>
+							<a href="<?php echo esc_url( admin_url( 'edit-tags.php?taxonomy=' . WPYOG_COLLECTION_TAX . '&post_type=' . WPYOG_NEWS_POST_TYPE ) ); ?>" class="button"><?php esc_html_e( 'Manage Collections', 'wpyog-news' ); ?></a>
 						</div>
 					</div>
 
 					<div class="wpyog-step">
 						<div class="wpyog-step-num">4</div>
+						<div class="wpyog-step-content">
+							<h3><?php esc_html_e( 'Display News on Your Site', 'wpyog-news' ); ?></h3>
+							<p><?php esc_html_e( 'Use the shortcode generator to create a shortcode and paste it anywhere on your site.', 'wpyog-news' ); ?></p>
+							<code>[wpyog_news layout="list" limit="10"]</code><br /><br />
+							<code>[wpyog_news layout="card" columns="3" limit="9"]</code><br /><br />
+							<code>[wpyog_news layout="carousel" slides_to_show="3" autoplay="true"]</code>
+						</div>
+					</div>
+
+					<div class="wpyog-step">
+						<div class="wpyog-step-num">5</div>
 						<div class="wpyog-step-content">
 							<h3><?php esc_html_e( 'External Links & Sources', 'wpyog-news' ); ?></h3>
 							<p><?php esc_html_e( 'When editing a news item, fill in the External Link field to redirect clicks to an external article. Add Source Details to credit the publication.', 'wpyog-news' ); ?></p>

@@ -23,10 +23,34 @@
 		var showExcerpt    = $('#wg-show-excerpt').is(':checked')  ? 'true' : 'false';
 		var showSource     = $('#wg-show-source').is(':checked')   ? 'true' : 'false';
 
+		// Post types to mix into this layout.
+		var postTypes = [];
+		$('.wg-post-type:checked').each(function () {
+			postTypes.push($(this).val());
+		});
+		var isDefaultPostType = (postTypes.length === 1 && postTypes[0] === 'wpyog_news');
+		var showType = $('#wg-show-type').is(':checked') ? 'true' : 'false';
+		var ids = $.trim($('#wg-ids').val() || '');
+		var collection = $('#wg-collection').val() || '';
+
+		// Carousel-only fields.
+		var slidesToShow  = $('#wg-slides-to-show').val()    || '3';
+		var transition    = $('#wg-transition').val()        || 'slide';
+		var autoplaySpeed = $('#wg-autoplay-speed').val()    || '4000';
+		var gap           = $('#wg-gap').val()               || '20';
+		var autoplay      = $('#wg-autoplay').is(':checked')       ? 'true' : 'false';
+		var pauseOnHover  = $('#wg-pause-on-hover').is(':checked')  ? 'true' : 'false';
+		var infinite      = $('#wg-infinite').is(':checked')        ? 'true' : 'false';
+		var arrows        = $('#wg-arrows').is(':checked')          ? 'true' : 'false';
+		var arrowsOnHover = $('#wg-arrows-on-hover').is(':checked') ? 'true' : 'false';
+		var dots          = $('#wg-dots').is(':checked')            ? 'true' : 'false';
+
 		var sc = '[wpyog_news';
 		sc += ' layout="'          + layout        + '"';
-		sc += ' limit="'           + limit         + '"';
-		if (category) {
+		if (!ids) {
+			sc += ' limit="'       + limit         + '"';
+		}
+		if (category && !ids) {
 			sc += ' category="'    + category      + '"';
 		}
 		sc += ' show_date="'       + showDate      + '"';
@@ -34,6 +58,18 @@
 		sc += ' excerpt_length="'  + excerptLength + '"';
 		sc += ' show_source="'     + showSource    + '"';
 		sc += ' order="'           + order         + '"';
+
+		if (!isDefaultPostType && postTypes.length) {
+			sc += ' post_type="' + postTypes.join(',') + '"';
+		}
+		if (!isDefaultPostType && showType === 'true') {
+			sc += ' show_type="true"';
+		}
+		if (ids) {
+			sc += ' ids="' + ids + '"';
+		} else if (collection) {
+			sc += ' collection="' + collection + '"';
+		}
 
 		if (layout === 'card') {
 			sc += ' columns="'     + columns       + '"';
@@ -43,19 +79,41 @@
 			sc += ' pagination_type="' + paginationType + '"';
 		}
 
+		if (layout === 'carousel') {
+			sc += ' slides_to_show="' + slidesToShow  + '"';
+			sc += ' autoplay="'       + autoplay      + '"';
+			sc += ' autoplay_speed="' + autoplaySpeed + '"';
+			sc += ' infinite="'       + infinite      + '"';
+			sc += ' arrows="'         + arrows        + '"';
+			sc += ' arrows_on_hover="' + arrowsOnHover + '"';
+			sc += ' dots="'           + dots          + '"';
+			sc += ' pause_on_hover="' + pauseOnHover  + '"';
+			sc += ' transition="'     + transition    + '"';
+			sc += ' gap="'            + gap           + '"';
+		}
+
 		sc += ']';
 
 		$('#wpyog-generated-code').text(sc);
 	}
 
-	// Show / hide card-only / list-only fields based on layout.
+	// Show the "Show Post Type Badge" toggle only when more than one post type is selected.
+	function togglePostTypeFields() {
+		var checkedCount = $('.wg-post-type:checked').length;
+		$('.wpyog-post-types-multi-only').toggle(checkedCount > 1);
+	}
+
+	// Show / hide card-only / list-only / carousel-only fields based on layout.
 	function toggleLayoutFields() {
 		var layout = $('#wg-layout').val();
+
+		$('.wpyog-card-only, .wpyog-list-only, .wpyog-carousel-only').hide();
+
 		if (layout === 'card') {
 			$('.wpyog-card-only').show();
-			$('.wpyog-list-only').hide();
+		} else if (layout === 'carousel') {
+			$('.wpyog-carousel-only').show();
 		} else {
-			$('.wpyog-card-only').hide();
 			$('.wpyog-list-only').show();
 		}
 	}
@@ -152,11 +210,13 @@
 		// Init
 		if ($('#wpyog-generated-code').length) {
 			toggleLayoutFields();
+			togglePostTypeFields();
 			buildShortcode();
 
 			// Rebuild on any change
-			$(document).on('change input', '#wg-layout, #wg-limit, #wg-category, #wg-order, #wg-pagination-type, #wg-excerpt-length, #wg-columns, #wg-show-date, #wg-show-excerpt, #wg-show-source', function () {
+			$(document).on('change input', '#wg-layout, #wg-limit, #wg-category, #wg-order, #wg-pagination-type, #wg-excerpt-length, #wg-columns, #wg-show-date, #wg-show-excerpt, #wg-show-source, #wg-slides-to-show, #wg-transition, #wg-autoplay-speed, #wg-gap, #wg-autoplay, #wg-pause-on-hover, #wg-infinite, #wg-arrows, #wg-arrows-on-hover, #wg-dots, .wg-post-type, #wg-show-type, #wg-ids, #wg-collection', function () {
 				toggleLayoutFields();
+				togglePostTypeFields();
 				buildShortcode();
 			});
 		}

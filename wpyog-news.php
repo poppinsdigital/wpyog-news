@@ -2,8 +2,8 @@
 /**
  * Plugin Name: WPYog News
  * Plugin URI:  https://popswidgets.com/wpyog-news/
- * Description: A clean and lightweight News plugin with List and Card layouts. Supports External URLs, Source details, Gutenberg block, and all major page builders.
- * Version:     1.1.4
+ * Description: A clean and lightweight News plugin with List, Card, and Carousel layouts. Supports External URLs, Source details, Gutenberg block, and all major page builders.
+ * Version:     1.4.2
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author:      popswidgets.com
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version
 if ( ! defined( 'WPYOG_NEWS_VERSION' ) ) {
-	define( 'WPYOG_NEWS_VERSION', '1.1.4' );
+	define( 'WPYOG_NEWS_VERSION', '1.4.2' );
 }
 
 // Plugin directory path
@@ -43,6 +43,12 @@ if ( ! defined( 'WPYOG_NEWS_POST_TYPE' ) ) {
 // Taxonomy slug
 if ( ! defined( 'WPYOG_NEWS_CAT' ) ) {
 	define( 'WPYOG_NEWS_CAT', 'wpyog_news_cat' );
+}
+
+// Collections taxonomy slug — a tag-style taxonomy shared across every public post type,
+// used to build repeatable curated collections that mix any post types together.
+if ( ! defined( 'WPYOG_COLLECTION_TAX' ) ) {
+	define( 'WPYOG_COLLECTION_TAX', 'wpyog_collection' );
 }
 
 /**

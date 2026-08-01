@@ -58,6 +58,53 @@ function wpyog_clean( $var ) {
 }
 
 /**
+ * Return public post types that can be mixed into a [wpyog_news] layout or tagged
+ * with a Collection (everything except attachments). Shared by the admin Shortcode
+ * Generator, the Gutenberg block, and the Collections taxonomy registration so the
+ * "mixable" and "taggable" post type lists always stay in sync.
+ *
+ * @return WP_Post_Type[] Keyed by post type slug.
+ */
+function wpyog_news_get_mixable_post_types() {
+	return array_filter(
+		get_post_types( array( 'public' => true ), 'objects' ),
+		function ( $post_type ) {
+			return 'attachment' !== $post_type->name;
+		}
+	);
+}
+
+/**
+ * Sanitize a comma-separated list of post type slugs for the [wpyog_news] shortcode
+ * and Gutenberg block, so multiple CPTs can be mixed into the same layout.
+ *
+ * Unknown/unregistered post types are dropped. Falls back to WPYOG_NEWS_POST_TYPE
+ * when the list is empty or nothing valid remains.
+ *
+ * @param string $raw Comma-separated post type slugs, e.g. "wpyog_news,post,product".
+ * @return string[] Array of valid, registered post type slugs.
+ */
+function wpyog_news_sanitize_post_types( $raw ) {
+
+	$requested = ! empty( $raw ) ? array_filter( array_map( 'sanitize_key', explode( ',', $raw ) ) ) : array();
+
+	$post_types = array();
+	foreach ( $requested as $post_type ) {
+		if ( post_type_exists( $post_type ) ) {
+			$post_types[] = $post_type;
+		}
+	}
+
+	$post_types = array_unique( $post_types );
+
+	if ( empty( $post_types ) ) {
+		$post_types = array( WPYOG_NEWS_POST_TYPE );
+	}
+
+	return $post_types;
+}
+
+/**
  * Return excerpt-length content for a news post, respecting manual excerpts.
  *
  * @param int    $post_id      Post ID.

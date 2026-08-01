@@ -53,6 +53,11 @@
 					show_source:    $btn.data('showSource')    || 'false',
 					order:          $btn.data('order')         || 'DESC',
 					orderby:        $btn.data('orderby')       || 'date',
+					post_type:      $btn.data('postType')      || '',
+					taxonomy:       $btn.data('taxonomy')      || '',
+					show_type:      $btn.data('showType')      || 'false',
+					ids:            $btn.data('ids')           || '',
+					collection:     $btn.data('collection')    || '',
 				},
 				success: function (response) {
 					if ( response.success && response.data.html ) {

@@ -32,7 +32,7 @@ class WPYOG_Block {
 
 		register_block_type( 'wpyog/news', array(
 			'title'           => __( 'WPYog News', 'wpyog-news' ),
-			'description'     => __( 'Display news in a list or card layout.', 'wpyog-news' ),
+			'description'     => __( 'Display news in a list, card, or carousel layout.', 'wpyog-news' ),
 			'category'        => 'widgets',
 			'icon'            => 'megaphone',
 			'supports'        => array(
@@ -56,6 +56,23 @@ class WPYOG_Block {
 				'extra_class'    => array( 'type' => 'string',  'default' => '' ),
 				'className'      => array( 'type' => 'string',  'default' => '' ),
 				'align'          => array( 'type' => 'string',  'default' => '' ),
+				// Mixing multiple post types.
+				'post_type'      => array( 'type' => 'string',  'default' => '' ),
+				'taxonomy'       => array( 'type' => 'string',  'default' => '' ),
+				'show_type'      => array( 'type' => 'boolean', 'default' => false ),
+				'ids'            => array( 'type' => 'string',  'default' => '' ),
+				'collection'     => array( 'type' => 'string',  'default' => '' ),
+				// Carousel-only.
+				'slides_to_show' => array( 'type' => 'integer', 'default' => 3 ),
+				'autoplay'       => array( 'type' => 'boolean', 'default' => true ),
+				'autoplay_speed' => array( 'type' => 'integer', 'default' => 4000 ),
+				'infinite'       => array( 'type' => 'boolean', 'default' => true ),
+				'arrows'         => array( 'type' => 'boolean', 'default' => true ),
+				'arrows_on_hover'=> array( 'type' => 'boolean', 'default' => false ),
+				'dots'           => array( 'type' => 'boolean', 'default' => true ),
+				'pause_on_hover' => array( 'type' => 'boolean', 'default' => true ),
+				'transition'     => array( 'type' => 'string',  'default' => 'slide' ),
+				'gap'            => array( 'type' => 'integer', 'default' => 20 ),
 			),
 			'render_callback' => array( $this, 'render_block' ),
 			'editor_script'   => 'wpyog-news-block-editor',
@@ -72,7 +89,9 @@ class WPYOG_Block {
 		);
 
 		wp_localize_script( 'wpyog-news-block-editor', 'wpyogBlockData', array(
-			'categories' => $this->get_categories_for_block(),
+			'categories'  => $this->get_categories_for_block(),
+			'postTypes'   => $this->get_post_types_for_block(),
+			'collections' => $this->get_collections_for_block(),
 		) );
 	}
 
@@ -100,6 +119,21 @@ class WPYOG_Block {
 			'extra_class'     => sanitize_text_field( $attributes['extra_class']     ?? '' ),
 			'className'       => sanitize_text_field( $attributes['className']       ?? '' ),
 			'align'           => sanitize_text_field( $attributes['align']           ?? '' ),
+			'slides_to_show'  => absint( $attributes['slides_to_show']               ?? 3 ),
+			'autoplay'        => empty( $attributes['autoplay'] )        ? 'false' : 'true',
+			'autoplay_speed'  => absint( $attributes['autoplay_speed']               ?? 4000 ),
+			'infinite'        => empty( $attributes['infinite'] )        ? 'false' : 'true',
+			'arrows'          => empty( $attributes['arrows'] )          ? 'false' : 'true',
+			'arrows_on_hover' => empty( $attributes['arrows_on_hover'] ) ? 'false' : 'true',
+			'dots'            => empty( $attributes['dots'] )            ? 'false' : 'true',
+			'pause_on_hover'  => empty( $attributes['pause_on_hover'] )  ? 'false' : 'true',
+			'transition'      => sanitize_text_field( $attributes['transition']     ?? 'slide' ),
+			'gap'             => absint( $attributes['gap']                          ?? 20 ),
+			'post_type'       => sanitize_text_field( $attributes['post_type']       ?? '' ),
+			'taxonomy'        => sanitize_text_field( $attributes['taxonomy']        ?? '' ),
+			'show_type'       => empty( $attributes['show_type'] )       ? 'false' : 'true',
+			'ids'             => sanitize_text_field( $attributes['ids']             ?? '' ),
+			'collection'      => sanitize_text_field( $attributes['collection']      ?? '' ),
 		);
 
 		return do_shortcode( '[wpyog_news ' . $this->build_shortcode_atts( $atts ) . ']' );
@@ -133,6 +167,49 @@ class WPYOG_Block {
 				$output[] = array(
 					'label' => $term->name . ' (ID: ' . $term->term_id . ')',
 					'value' => (string) $term->term_id,
+				);
+			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Return public post types formatted for the block editor's "Post Types" checklist.
+	 * Lets users mix WPYog News with other CPTs (e.g. Posts, Products) in one layout.
+	 *
+	 * @return array
+	 */
+	private function get_post_types_for_block() {
+		$post_types = wpyog_news_get_mixable_post_types();
+		$output     = array();
+
+		foreach ( $post_types as $post_type ) {
+			$output[] = array(
+				'label' => $post_type->labels->singular_name,
+				'value' => $post_type->name,
+			);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Return existing Collections formatted for the block editor's "Collection" select control.
+	 * Collections are a shared tag-style taxonomy for building a repeatable curated group of
+	 * posts across any mix of post types.
+	 *
+	 * @return array
+	 */
+	private function get_collections_for_block() {
+		$terms  = get_terms( array( 'taxonomy' => WPYOG_COLLECTION_TAX, 'hide_empty' => false ) );
+		$output = array( array( 'label' => __( 'No Collection', 'wpyog-news' ), 'value' => '' ) );
+
+		if ( ! is_wp_error( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$output[] = array(
+					'label' => $term->name,
+					'value' => $term->slug,
 				);
 			}
 		}

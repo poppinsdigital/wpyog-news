@@ -17,6 +17,9 @@ class WPYOG_Post_Types {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'register' ) );
+		// Late priority so other plugins/themes have already registered their post types
+		// by the time we build the list of post types the Collections taxonomy attaches to.
+		add_action( 'init', array( $this, 'register_collection_taxonomy' ), 999 );
 		add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 	}
 
@@ -137,6 +140,58 @@ class WPYOG_Post_Types {
 		);
 
 		register_taxonomy( WPYOG_NEWS_CAT, array( WPYOG_NEWS_POST_TYPE ), apply_filters( 'wpyog_news_taxonomy_args', $args ) );
+	}
+
+	/**
+	 * Register the 'wpyog_collection' taxonomy — a checkbox-style taxonomy attached to
+	 * every public post type, so editors can build a repeatable curated collection (e.g.
+	 * "Homepage Picks") by ticking a box on posts of any type from their normal edit
+	 * screen, instead of typing post IDs into a shortcode every time.
+	 *
+	 * Hierarchical like Categories: WordPress renders the standard checkbox-list meta box
+	 * (post_categories_meta_box) with a "+ Add New Collection" toggle to create one inline
+	 * — no searching/typing an existing name required, just tick the box. No rewrite/archive
+	 * pages — this taxonomy is a curation tool for the [wpyog_news] `collection` attribute,
+	 * not a public browsing feature.
+	 *
+	 * @since 1.4.0
+	 */
+	public function register_collection_taxonomy() {
+
+		$post_types = array_keys( wpyog_news_get_mixable_post_types() );
+
+		if ( empty( $post_types ) ) {
+			return;
+		}
+
+		$labels = array(
+			'name'              => _x( 'Collections', 'Taxonomy general name', 'wpyog-news' ),
+			'singular_name'     => _x( 'Collection', 'Taxonomy singular name', 'wpyog-news' ),
+			'search_items'      => __( 'Search Collections', 'wpyog-news' ),
+			'all_items'         => __( 'All Collections', 'wpyog-news' ),
+			'parent_item'       => __( 'Parent Collection', 'wpyog-news' ),
+			'parent_item_colon' => __( 'Parent Collection:', 'wpyog-news' ),
+			'edit_item'         => __( 'Edit Collection', 'wpyog-news' ),
+			'update_item'       => __( 'Update Collection', 'wpyog-news' ),
+			'add_new_item'      => __( 'Add New Collection', 'wpyog-news' ),
+			'new_item_name'     => __( 'New Collection Name', 'wpyog-news' ),
+			'not_found'         => __( 'No collections found.', 'wpyog-news' ),
+			'menu_name'         => __( 'Collections', 'wpyog-news' ),
+		);
+
+		$args = array(
+			'labels'            => $labels,
+			'hierarchical'      => true,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'show_in_nav_menus' => false,
+			'show_in_rest'      => true,
+			'show_tagcloud'     => false,
+			'query_var'         => true,
+			'rewrite'           => false,
+		);
+
+		register_taxonomy( WPYOG_COLLECTION_TAX, $post_types, apply_filters( 'wpyog_collection_taxonomy_args', $args ) );
 	}
 
 	/**

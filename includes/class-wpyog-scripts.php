@@ -52,5 +52,14 @@ class WPYOG_Scripts {
 			WPYOG_NEWS_VERSION,
 			true
 		);
+
+		// Carousel script — vanilla JS, no jQuery dependency.
+		wp_enqueue_script(
+			'wpyog-news-carousel',
+			WPYOG_NEWS_URL . 'assets/js/wpyog-carousel.js',
+			array(),
+			WPYOG_NEWS_VERSION,
+			true
+		);
 	}
 }
